@@ -1,5 +1,4 @@
 export enum AppEnum {
-	DEFAULT_TITLE = 'OffMessage App',
     USERNAME_ALIAS = 'Off Message',
     EMOJI_AVATAR = '',
     USER_MESSAGED_BOT = 'You have messaged the bot user. This has no effect.',

@@ -62,7 +62,7 @@ export class ZohoPeople {
         return employees;
     }
 
-    public async getLeavesByPeriod(date: Date, sIndex = 0, limit = 200): Promise<any> {
+    public async getLeaves(date: Date, sIndex = 0, limit = 200): Promise<any> {
         date.setDate(date.getDate() + 1);
         const toParts = date.toDateString().split(' ');
         const to = `${ toParts[2] }-${ toParts[1] }-${ toParts[3] }`;

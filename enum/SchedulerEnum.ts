@@ -1,5 +1,5 @@
 export enum SchedulerEnum {
-	OFFMESSAGE = 'offMessage',
+	SENDLATER = 'sendlater',
 	SETUP = 'setup',
 	SETUP_TIME = '30 seconds',
 }

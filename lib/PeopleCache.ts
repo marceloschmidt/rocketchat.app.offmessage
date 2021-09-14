@@ -17,7 +17,7 @@ export class PeopleCache {
         const date = new Date();
 
         const employees = await this.app.zohoPeople.getEmployees();
-        const leaves = await this.app.zohoPeople.getLeavesByPeriod(new Date());
+        const leaves = await this.app.zohoPeople.getLeaves(new Date());
         const _holidays = await this.app.zohoPeople.getHolidays(new Date());
         const holidays: any = {};
         const birthdays: any = {};

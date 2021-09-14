@@ -1,6 +1,4 @@
 export enum BlocksEnum {
-	SAVE = 'Save',
-	DISMISS = 'Dismiss',
     SEND_MESSAGE_LABEL = 'Send anyway',
     SEND_MESSAGE_ACTION_ID = 'send-message',
     SCHEDULE_MESSAGE_LABEL = 'Schedule',

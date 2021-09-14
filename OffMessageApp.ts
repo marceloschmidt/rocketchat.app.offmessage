@@ -13,7 +13,7 @@ import { IAppInfo } from '@rocket.chat/apps-engine/definition/metadata';
 import { RoomType } from '@rocket.chat/apps-engine/definition/rooms';
 import { StartupType } from '@rocket.chat/apps-engine/definition/scheduler';
 import { IUIKitInteractionHandler, IUIKitResponse, UIKitBlockInteractionContext, UIKitViewCloseInteractionContext, UIKitViewSubmitInteractionContext } from '@rocket.chat/apps-engine/definition/uikit';
-import { ZohoPeople } from './actions/ZohoPeople';
+import { ZohoPeople } from './lib/ZohoPeople';
 import { SchedulerEnum } from './enum/SchedulerEnum';
 import { ExecuteBlockActionHandler } from './handlers/ExecuteBlockActionHandler';
 import { ExecutePostMessageSentHandler } from './handlers/ExecutePostMessageSentHandler';
@@ -56,7 +56,7 @@ export class OffMessageApp extends App implements IUIKitInteractionHandler, IPre
                 },
             },
             {
-                id: 'sendlater',
+                id: SchedulerEnum.SENDLATER,
                 processor: sendLaterProcessor
             }
         ]);

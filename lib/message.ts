@@ -7,30 +7,6 @@ import { IUser } from '@rocket.chat/apps-engine/definition/users';
 import { AppEnum } from '../enum/App';
 import { ErrorsEnum } from '../enum/Errors';
 
-export const notifyRoom = async ({ app, read, modify, room, text, attachments, blocks }: { app: IApp, read: IRead, modify: IModify, room: IRoom, text?: string, attachments?: Array<IMessageAttachment>, blocks?: BlockBuilder }): Promise<void> => {
-    const appUser = await read.getUserReader().getAppUser(app.getID());
-    if (!appUser) {
-        throw new Error(ErrorsEnum.ERROR_GETTING_APP_USER);
-    }
-    const msg = modify.getCreator().startMessage()
-        .setGroupable(false)
-        .setSender(appUser)
-        .setRoom(room);
-
-    if (text && text.length > 0) {
-        msg.setText(text);
-    }
-    if (attachments && attachments.length > 0) {
-        msg.setAttachments(attachments);
-    }
-    if (blocks !== undefined) {
-        msg.setBlocks(blocks);
-    }
-
-    return read.getNotifier().notifyRoom(room, msg.getMessage());
-};
-
-
 export const notifyUser = async ({ app, read, modify, room, user, text, attachments, blocks }: { app: IApp, read: IRead, modify: IModify, room: IRoom, user: IUser, text?: string, attachments?: Array<IMessageAttachment>, blocks?: BlockBuilder }): Promise<void> => {
     const appUser = await read.getUserReader().getAppUser(app.getID());
     if (!appUser) {
