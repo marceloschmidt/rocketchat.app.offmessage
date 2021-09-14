@@ -1,4 +1,4 @@
 {
-    "Params": "modal, help",
-    "Description": "Does something with OffMessage App. Type `/offMessage help` for more info."
+    "Params": "enable, disable",
+    "Description": "Enables/Disables OffMessage for the current user."
 }

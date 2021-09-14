@@ -21,6 +21,7 @@ import { ExecutePreMessageSentPreventHandler } from './handlers/ExecutePreMessag
 import { PeopleCache } from './lib/PeopleCache';
 import { sendLaterProcessor } from './processors/SendLaterProcessor';
 import { settings } from './settings';
+import { OffMessageCommand } from './commands/OffMessageCommand';
 
 export class OffMessageApp extends App implements IUIKitInteractionHandler, IPreMessageSentPrevent, IPostMessageSent {
     public readonly zohoPeople: ZohoPeople;
@@ -36,12 +37,16 @@ export class OffMessageApp extends App implements IUIKitInteractionHandler, IPre
 
     /*
     Extend Configuration
+    Adds commands
     Adds settings
     Sets up the scheduler startup settings and processors
     */
     protected async extendConfiguration(configuration: IConfigurationExtend): Promise<void> {
         // Settings
         await Promise.all(settings.map((setting) => configuration.settings.provideSetting(setting)));
+
+        // Commands
+        await configuration.slashCommands.provideSlashCommand(new OffMessageCommand(this));
 
         // Scheduler processors:
         configuration.scheduler.registerProcessors([

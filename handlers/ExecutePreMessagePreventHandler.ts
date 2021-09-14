@@ -4,7 +4,7 @@ import { BlockElementType, IButtonElement, TextObjectType } from '@rocket.chat/a
 import { AppEnum } from '../enum/App';
 import { BlocksEnum } from '../enum/Blocks';
 import { notifyUser } from '../lib/message';
-import { clearUserChoice, getUserChoice } from '../lib/persistence';
+import { clearUserChoice, getAppStatus, getUserChoice } from '../lib/persistence';
 import { OffMessageApp } from '../OffMessageApp';
 
 export class ExecutePreMessageSentPreventHandler {
@@ -16,6 +16,11 @@ export class ExecutePreMessageSentPreventHandler {
     ) {}
 
     public async run(message: IMessage): Promise<boolean> {
+        const appStatus = await getAppStatus(this.read.getPersistenceReader(), message.sender.id);
+        if (!appStatus?.enabled) {
+            return false;
+        }
+
         const date = new Date();
         const destUserId = message.room.userIds?.filter(userId => userId !== message.sender.id)?.[0];
 
@@ -92,7 +97,6 @@ export class ExecutePreMessageSentPreventHandler {
 
                         // Check if user is having a birthday (auto-PTO)
                         let userOnBirthday = birthdays[employee.Zoho_ID] || false
-
                         if (userOnPTO || userOnHoliday || userOnBirthday) {
                             const blocks = this.modify.getCreator().getBlockBuilder();
                             blocks.addSectionBlock({
@@ -141,7 +145,7 @@ export class ExecutePreMessageSentPreventHandler {
                                 ],
                             });
 
-                            await notifyUser({ app: this.app, read: this.read, modify: this.modify, room: message.room, user: message.sender, blocks });
+                            await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: message.room, user: message.sender, blocks });
 
                             // Prevents sending the message
                             return true;
@@ -155,8 +159,45 @@ export class ExecutePreMessageSentPreventHandler {
             // @TODO: Check if user is outside of working hours
 
 
-            // @TODO: Check if user is busy
+            // Check if user is busy or offline
+            if (destUser.status === 'busy' || destUser.status === 'offline') {
+                const blocks = this.modify.getCreator().getBlockBuilder();
+                blocks.addSectionBlock({
+                    text: {
+                        type: TextObjectType.MARKDOWN,
+                        text: AppEnum.MESSAGE_PREVENTED_BUSY_OFFLINE.replace('%s', destUser.status),
+                    },
+                });
+                blocks.addActionsBlock({
+                    elements: [{
+                        type: BlockElementType.BUTTON,
+                        text: {
+                            type: TextObjectType.PLAINTEXT,
+                            text: BlocksEnum.SEND_MESSAGE_LABEL,
+                        },
+                        value: JSON.stringify({
+                            id: message.id,
+                            text: message.text,
+                        }),
+                        actionId: BlocksEnum.SEND_MESSAGE_ACTION_ID,
+                    } as IButtonElement,
+                    {
+                        type: BlockElementType.BUTTON,
+                        text: {
+                            type: TextObjectType.PLAINTEXT,
+                            text: BlocksEnum.CANCEL_MESSAGE_LABEL,
+                        },
+                        value: JSON.stringify({
+                            id: message.id
+                        }),
+                        actionId: BlocksEnum.CANCEL_MESSAGE_ACTION_ID,
+                    } as IButtonElement,
+                    ],
+                });
 
+                await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: message.room, user: message.sender, blocks });
+                return true;
+            }
         }
 
         return false;

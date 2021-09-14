@@ -41,7 +41,7 @@ export class ExecuteBlockActionHandler {
                         text: BlocksEnum.TIMEOUT_MESSAGE.replace('%s', AppEnum.TIMEOUT_MINUTES),
                     },
                 });
-                await notifyUser({ app: this.app, read: this.read, modify: this.modify, room: contextData.room as IRoom, user: contextData.user, blocks });
+                await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: contextData.room as IRoom, user: contextData.user, blocks });
                 // tslint:disable-next-line:max-line-length
                 await sendMessage({ appId: this.app.getID(), read: this.read, modify: this.modify, room: contextData.room as IRoom, sender: contextData.user, text });
                 return context.getInteractionResponder().successResponse();
@@ -74,7 +74,7 @@ export class ExecuteBlockActionHandler {
                     } as IButtonElement,
                     ],
                 });
-                await notifyUser({ app: this.app, read: this.read, modify: this.modify, room: contextData.room as IRoom, user: contextData.user, blocks });
+                await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: contextData.room as IRoom, user: contextData.user, blocks });
 
                 break;
             case BlocksEnum.CANCEL_MESSAGE_ACTION_ID:
@@ -84,7 +84,7 @@ export class ExecuteBlockActionHandler {
                         text: BlocksEnum.MESSAGE_CANCELLED,
                     },
                 });
-                await notifyUser({ app: this.app, read: this.read, modify: this.modify, room: contextData.room as IRoom, user: contextData.user, blocks });
+                await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: contextData.room as IRoom, user: contextData.user, blocks });
                 break;
             case BlocksEnum.CANCEL_SCHEDULE_ACTION_ID:
                 await this.modify.getScheduler().cancelJob(id);
@@ -95,7 +95,7 @@ export class ExecuteBlockActionHandler {
                         text: BlocksEnum.MESSAGE_CANCELLED,
                     },
                 });
-                await notifyUser({ app: this.app, read: this.read, modify: this.modify, room: contextData.room as IRoom, user: contextData.user, blocks });
+                await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: contextData.room as IRoom, user: contextData.user, blocks });
                 break;
             default:
                 return context.getInteractionResponder().successResponse();

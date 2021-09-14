@@ -1,6 +1,17 @@
 import { IPersistence, IPersistenceRead } from '@rocket.chat/apps-engine/definition/accessors';
 import { RocketChatAssociationModel, RocketChatAssociationRecord } from '@rocket.chat/apps-engine/definition/metadata';
 
+export const persistAppStatus = async (persistence: IPersistence, userId: string, data: any): Promise<void> => {
+    const association = new RocketChatAssociationRecord(RocketChatAssociationModel.USER, `${ userId }#APPSTATUS`);
+    await persistence.updateByAssociation(association, data, true);
+};
+
+export const getAppStatus = async (persistenceRead: IPersistenceRead, userId: string): Promise<any> => {
+    const association = new RocketChatAssociationRecord(RocketChatAssociationModel.USER, `${ userId }#APPSTATUS`);
+    const result = await persistenceRead.readByAssociation(association) as Array<any>;
+    return result && result.length ? result[0] : null;
+};
+
 export const persistUserChoice = async (persistence: IPersistence, userId: string, id: string | undefined, data: any): Promise<void> => {
     const association = new RocketChatAssociationRecord(RocketChatAssociationModel.USER, `${ userId }#SEND#${ id }`);
     await persistence.updateByAssociation(association, data, true);

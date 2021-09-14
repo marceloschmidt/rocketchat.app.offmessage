@@ -18,7 +18,7 @@ export class ExecutePostMessageSentHandler {
             throw new Error(ErrorsEnum.ERROR_GETTING_APP_USER);
         }
         if (message.room.userIds?.indexOf(appUser.id) !== -1 && message.sender.id !== appUser.id) {
-            await notifyUser({ app: this.app, read: this.read, modify: this.modify, room: message.room, user: message.sender, text: AppEnum.USER_MESSAGED_BOT });
+            await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: message.room, user: message.sender, text: AppEnum.USER_MESSAGED_BOT });
         }
     }
 }
