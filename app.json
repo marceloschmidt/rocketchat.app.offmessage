@@ -1,0 +1,40 @@
+{
+    "id": "59d357c0-cf0a-41c2-8413-f969c8174e74",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.19.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Marcelo Schmidt",
+        "homepage": "https://github.com/RocketChat/Apps.OffMessage",
+        "support": "https://github.com/RocketChat/Apps.OffMessage/issues"
+    },
+    "name": "OffMessage",
+    "nameSlug": "offmessage",
+    "classFile": "OffMessageApp.ts",
+    "description": "OffMessage App",
+    "permissions": [
+        {
+            "name": "message.write"
+        },
+        {
+            "name": "scheduler"
+        },
+        {
+            "name": "persistence"
+        },
+        {
+            "name": "ui.interact"
+        },
+        {
+            "name": "user.read"
+        },
+        {
+            "name": "networking"
+        }
+    ],
+    "implements": [
+        "IUIKitInteractionHandler",
+        "IPreMessageSentPrevent",
+        "IPostMessageSent"
+    ]
+}
