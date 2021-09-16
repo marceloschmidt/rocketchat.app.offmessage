@@ -160,44 +160,44 @@ export class ExecutePreMessageSentPreventHandler {
 
 
             // Check if user is busy or offline
-            if (destUser.status === 'busy' || destUser.status === 'offline') {
-                const blocks = this.modify.getCreator().getBlockBuilder();
-                blocks.addSectionBlock({
-                    text: {
-                        type: TextObjectType.MARKDOWN,
-                        text: AppEnum.MESSAGE_PREVENTED_BUSY_OFFLINE.replace('%s', destUser.status),
-                    },
-                });
-                blocks.addActionsBlock({
-                    elements: [{
-                        type: BlockElementType.BUTTON,
-                        text: {
-                            type: TextObjectType.PLAINTEXT,
-                            text: BlocksEnum.SEND_MESSAGE_LABEL,
-                        },
-                        value: JSON.stringify({
-                            id: message.id,
-                            text: message.text,
-                        }),
-                        actionId: BlocksEnum.SEND_MESSAGE_ACTION_ID,
-                    } as IButtonElement,
-                    {
-                        type: BlockElementType.BUTTON,
-                        text: {
-                            type: TextObjectType.PLAINTEXT,
-                            text: BlocksEnum.CANCEL_MESSAGE_LABEL,
-                        },
-                        value: JSON.stringify({
-                            id: message.id
-                        }),
-                        actionId: BlocksEnum.CANCEL_MESSAGE_ACTION_ID,
-                    } as IButtonElement,
-                    ],
-                });
+            // if (destUser.status === 'busy' || destUser.status === 'offline') {
+            //     const blocks = this.modify.getCreator().getBlockBuilder();
+            //     blocks.addSectionBlock({
+            //         text: {
+            //             type: TextObjectType.MARKDOWN,
+            //             text: AppEnum.MESSAGE_PREVENTED_BUSY_OFFLINE.replace('%s', destUser.status),
+            //         },
+            //     });
+            //     blocks.addActionsBlock({
+            //         elements: [{
+            //             type: BlockElementType.BUTTON,
+            //             text: {
+            //                 type: TextObjectType.PLAINTEXT,
+            //                 text: BlocksEnum.SEND_MESSAGE_LABEL,
+            //             },
+            //             value: JSON.stringify({
+            //                 id: message.id,
+            //                 text: message.text,
+            //             }),
+            //             actionId: BlocksEnum.SEND_MESSAGE_ACTION_ID,
+            //         } as IButtonElement,
+            //         {
+            //             type: BlockElementType.BUTTON,
+            //             text: {
+            //                 type: TextObjectType.PLAINTEXT,
+            //                 text: BlocksEnum.CANCEL_MESSAGE_LABEL,
+            //             },
+            //             value: JSON.stringify({
+            //                 id: message.id
+            //             }),
+            //             actionId: BlocksEnum.CANCEL_MESSAGE_ACTION_ID,
+            //         } as IButtonElement,
+            //         ],
+            //     });
 
-                await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: message.room, user: message.sender, blocks });
-                return true;
-            }
+            //     await notifyUser({ appId: this.app.getID(), read: this.read, modify: this.modify, room: message.room, user: message.sender, blocks });
+            //     return true;
+            // }
         }
 
         return false;
