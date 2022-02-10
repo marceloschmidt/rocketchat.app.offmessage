@@ -1,13 +1,37 @@
 import { ISetting, SettingType } from '@rocket.chat/apps-engine/definition/settings';
-import { SettingEnum } from './enum/Setting';
+
+export enum AppSetting {
+    PeopleClientId = 'people_client_id',
+    PeopleSecret = 'people_secret',
+    PeopleRefreshToken = 'people_refresh_token',
+}
+
 export const settings: Array<ISetting> = [
     {
-        id: SettingEnum.ZOHO_AUTHTOKEN_URL,
+        id: AppSetting.PeopleClientId,
         type: SettingType.STRING,
         packageValue: '',
-        required: false,
-        public: false,
-        i18nLabel: SettingEnum.ZOHO_AUTHTOKEN_URL,
-        i18nDescription: SettingEnum.ZOHO_AUTHTOKEN_URL_DESCRIPTION,
+        required: true,
+        public: true,
+        i18nLabel: 'people_client_id',
+        i18nDescription: 'people_client_id_description',
+    },
+    {
+        id: AppSetting.PeopleSecret,
+        type: SettingType.STRING,
+        packageValue: '',
+        required: true,
+        public: true,
+        i18nLabel: 'people_secret',
+        i18nDescription: 'people_secret_description',
+    },
+    {
+        id: AppSetting.PeopleRefreshToken,
+        type: SettingType.STRING,
+        packageValue: '',
+        required: true,
+        public: true,
+        i18nLabel: 'people_refresh_token',
+        i18nDescription: 'people_refresh_token_description',
     },
 ];

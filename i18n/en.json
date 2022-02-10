@@ -1,4 +1,10 @@
 {
     "Params": "enable, disable",
-    "Description": "Enables/Disables OffMessage for the current user."
+    "Description": "Enables/Disables OffMessage for the current user.",
+    "people_client_id": "Zoho People Client ID",
+    "people_secret": "Zoho People Secret",
+    "people_refresh_token": "Zoho People Refresh Token",
+    "people_client_id_description": "Client ID for accessing Zoho People API",
+    "people_secret_description": "Secret for accessing Zoho People API",
+    "people_refresh_token_description": "Refresh Token for Zoho People API"
 }

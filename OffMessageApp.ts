@@ -69,7 +69,7 @@ export class OffMessageApp extends App implements IUIKitInteractionHandler, IPre
 
     // When app is enabled, load people cache for the first time
     public async onEnable(): Promise<boolean> {
-        this.peopleCache.buildCache().then((peopleCache: any) => { this.peopleCache.setCache(peopleCache) }).catch((error) => { console.log('Error setting people cache', error) });
+        await this.peopleCache.load();
         return true;
     }
 

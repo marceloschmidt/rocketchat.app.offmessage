@@ -16,8 +16,10 @@ export class ExecutePreMessageSentPreventHandler {
     ) {}
 
     public async run(message: IMessage): Promise<boolean> {
+        await this.app.peopleCache.load();
+
         const appStatus = await getAppStatus(this.read.getPersistenceReader(), message.sender.id);
-        if (!appStatus?.enabled) {
+        if (appStatus?.disabled) {
             return false;
         }
 
@@ -26,6 +28,7 @@ export class ExecutePreMessageSentPreventHandler {
 
         // Checks if user has clicked to send message anyway in the past TIMEOUT_MINUTES
         const sendAnyway = await getUserChoice(this.read.getPersistenceReader(), message.sender.id, message.room.id);
+
         if (sendAnyway?.sendMessage) {
             // If time since clicked > TIMEOUT_MINUTES, clear user choice for the room and check if we need to prevent message or not
             if ((date.getTime() - sendAnyway.timestamp) / (1000 * 60) > parseInt(AppEnum.TIMEOUT_MINUTES, 10)) {
@@ -44,10 +47,6 @@ export class ExecutePreMessageSentPreventHandler {
                     const leaves = this.app.peopleCache.leaves;
                     const holidays = this.app.peopleCache.holidays;
                     const birthdays = this.app.peopleCache.birthdays;
-
-                    if (!this.app.peopleCache.isValid()) {
-                        this.app.peopleCache.buildCache().then((peopleCache: any) => { this.app.peopleCache.setCache(peopleCache); }).catch((error) => { console.log('Error setting people cache', error) });
-                    }
 
                     let employee;
                     if (employees.length > 0) {
@@ -85,7 +84,7 @@ export class ExecutePreMessageSentPreventHandler {
 
                         // Check if user is on a Holiday (auto-PTO)
                         let userOnHoliday = false;
-                        for (const holiday of holidays[employee.Zoho_ID] || []) {
+                        for (const holiday of holidays[employeeId] || []) {
                             const holidayDate = new Date(holiday.Date);
                             const holidayDatePlusOne = new Date(holidayDate);
                             holidayDatePlusOne.setDate(holidayDatePlusOne.getDate() + 1);
@@ -96,7 +95,7 @@ export class ExecutePreMessageSentPreventHandler {
                         }
 
                         // Check if user is having a birthday (auto-PTO)
-                        let userOnBirthday = birthdays[employee.Zoho_ID] || false
+                        let userOnBirthday = !!birthdays.today[employeeId] || false
                         if (userOnPTO || userOnHoliday || userOnBirthday) {
                             const blocks = this.modify.getCreator().getBlockBuilder();
                             blocks.addSectionBlock({
