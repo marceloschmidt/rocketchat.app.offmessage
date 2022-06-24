@@ -10,7 +10,7 @@ export class ZohoPeople {
     ) {}
 
     private async request(method: RequestMethod, path: string, params: any, data: any): Promise<IHttpResponse> {
-        console.log(method, path, JSON.stringify(params));
+        console.log('OFFMESSAGE', method, path, JSON.stringify(params));
         if (!this.token) {
             this.token = await this.refreshToken();
         }
@@ -23,6 +23,7 @@ export class ZohoPeople {
 		};
         const http = this.app.getAccessors().http;
         const result = await http[method](url, options) as IHttpResponse;
+        console.log('OFFMESSAGE', result?.statusCode, result?.content);
         if (result?.statusCode === 401 && result.content?.indexOf('The provided OAuth token is invalid.') !== -1) {
             this.token = await this.refreshToken();
             return this.request(method, path, params, data);
@@ -41,13 +42,13 @@ export class ZohoPeople {
             redirect_uri: 'https://rocket.chat',
             refresh_token: await reader.getEnvironmentReader().getSettings().getValueById(AppSetting.PeopleRefreshToken),
         };
-        console.log('refreshToken', params);
+        console.log('OFFMESSAGE', 'refreshToken', params);
         const response = await http.post(url, { params });
         if (response && response.data && response.data.access_token) {
-            console.log('New token', response.data.access_token);
+            console.log('OFFMESSAGE', 'New token', response.data.access_token);
             return `Zoho-oauthtoken ${response.data.access_token}`;
         } else {
-            console.log('Error refreshing token', JSON.stringify(response.data));
+            console.log('OFFMESSAGE', 'Error refreshing token', JSON.stringify(response.data));
             throw new Error('Error refreshing token');
         }
     }

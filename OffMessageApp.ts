@@ -117,7 +117,7 @@ export class OffMessageApp extends App implements IUIKitInteractionHandler, IPre
             const handler = new ExecuteBlockActionHandler(this, read, modify, persistence);
             return await handler.run(context);
         } catch (err) {
-            console.log(err);
+            console.log('OFFMESSAGE', err);
             this.getLogger().log(`${ err.message }`);
             return context.getInteractionResponder().errorResponse();
         }

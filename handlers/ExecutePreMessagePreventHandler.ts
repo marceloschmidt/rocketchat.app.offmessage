@@ -152,7 +152,7 @@ export class ExecutePreMessageSentPreventHandler {
                     }
                 }
             } else {
-                console.log('PeopleCache not loaded');
+                console.log('OFFMESSAGE', 'PeopleCache not loaded');
             }
 
             // @TODO: Check if user is outside of working hours

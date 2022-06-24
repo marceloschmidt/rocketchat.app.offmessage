@@ -59,7 +59,7 @@ export class PeopleCache {
         this._leaves = leaves;
         this._holidays = holidays;
         this._birthdays = birthdays;
-        console.log('PeopleCache set');
+        console.log('OFFMESSAGE', 'PeopleCache set');
     }
 
     public isValid(): boolean {
